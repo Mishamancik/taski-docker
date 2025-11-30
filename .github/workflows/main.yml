@@ -155,3 +155,21 @@ jobs:
           push: true
           # Тут вместо username должен быть ваш логин на Docker Hub
           tags: ${{ secrets.DOCKER_USERNAME }}/taski_gateway:latest
+
+
+  send_message:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - name: Send message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: Деплой успешно выполнен!
+
+
+# Зайдите в Settings → Secrets в вашем репозитории и добавьте ещё две переменные:
+# - в переменной TELEGRAM_TO сохраните ID своего телеграм-аккаунта. Узнать свой ID можно у телеграм-бота @userinfobot. Бот станет отправлять уведомления в аккаунт с указанным ID;
+# - в переменной TELEGRAM_TOKEN сохраните токен вашего бота. Получить этот токен можно у телеграм-бота @BotFather. 
+# Чтобы ваш бот мог отправлять вам сообщения — сперва вы сами напишите ему что-нибудь. Ботам запрещено первыми начинать разговор, пользователь должен написать боту первым.
